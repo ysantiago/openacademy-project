@@ -9,13 +9,13 @@
             <field name="arch" type="xml">
                 <form string="Session">
                     <header>
-                        <button name="buttom_draft" type="workflow"
+                        <button name="button_draft" type="workflow"
                                 string="Reset to draft"
                                 states="confirmed,done"/>
-                        <button name="buttom_confirm" type="workflow"
+                        <button name="button_confirm" type="workflow"
                                 string="Confirm" states="draft"
                                 class="oe_highlight"/>
-                        <button name="buttom_done" type="workflow"
+                        <button name="button_done" type="workflow"
                                 string="Mark as done" states="confirmed"
                                 class="oe_highlight"/>
                         <field name="state" widget="statusbar"/>
