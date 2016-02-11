@@ -24,8 +24,14 @@ for session in sessions:
 # 3.create a new session for the "Functional" course
 course_id = call('openacademy.course', 'search', [('name','ilike','Curso 1')])[0]
 print "course_id", course_id
+responsible_id = call('res.partner', 'search', [('name','ilike','Agrolait')])[0]
+print "responsible_id", responsible_id
+
 new_session_id = call('openacademy.session', 'create', {
-    'name' : 'My session',
-    'course_id' : course_id,
-})
+    	'name' : 'My session',
+    	'course_id' : course_id,
+	'instructor_id': responsible_id,
+	#'attendee_ids': [(4, responsible_id)]
+	'attendee_ids': [(4, 1),(4,5)],
+	})
 print "session_id created", new_session_id
