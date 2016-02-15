@@ -62,7 +62,7 @@ class GlobalTestOpenacademyCourse(TransactionCase):
         '''
         Test to duplicate a course and check that work fine!
         '''
-        course = self.env.ref'openacademy.course0')
+        course = self.env.ref('openacademy.course0')
         course_id = course.copy()
         print 'course_id', course_id
 

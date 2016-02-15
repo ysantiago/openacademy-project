@@ -18,7 +18,7 @@
 
     # always loaded
     'data': [
-        #'demo/openacademy_course_demo.xml',
+        'demo/openacademy_course_demo.xml',
         'view/openacademy_course_view.xml',
         'view/openacademy_session_view.xml',
 	'view/partner_view.xml',
