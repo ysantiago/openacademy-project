@@ -28,7 +28,7 @@ class GlobalTestOpenacademyCourse(TransactionCase):
 
     # Mute the error openerp.sql_db to avoid it in log
     @mute_logger('openerp.sql_db')
-    def test_01_same_name_description(self):
+    def test_10_same_name_description(self):
         '''
         Test create a course with some name and description.
         To test constraint of name different to description.
@@ -43,7 +43,7 @@ class GlobalTestOpenacademyCourse(TransactionCase):
             self.create_course('test', 'test', None)
 
     @mute_logger('openerp.sql_db')
-    def test_02_two_courses_same_name(self):
+    def test_20_two_courses_same_name(self):
         '''
         Test to create two courses with same name.
         To raise constraint of unique name 
@@ -58,7 +58,13 @@ class GlobalTestOpenacademyCourse(TransactionCase):
             new_id2 = self.create_course('test1', 'test_description', None)
             print 'new_id2', new_id2
 
-
+    def test_15_duplicate_course(self):
+        '''
+        Test to duplicate a course and check that work fine!
+        '''
+        course = self.env.ref'openacademy.course0')
+        course_id = course.copy()
+        print 'course_id', course_id
 
 
 
