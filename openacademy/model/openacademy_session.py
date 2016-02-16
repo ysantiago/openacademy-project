@@ -59,7 +59,7 @@ class Session(models.Model):
             return {
                 'warning': {
                     'title': _("Incorrect 'seats' value"),
-                    'message': _("The number of available 
+                    'message': _("The number of available \
                                 seats may not be negative"),
                 },
             }
