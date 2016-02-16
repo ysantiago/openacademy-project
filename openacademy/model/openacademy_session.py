@@ -2,6 +2,7 @@
 from datetime import timedelta
 from openerp import api, exceptions, fields, models, _
 
+
 class Session(models.Model):
     _name = 'openacademy.session'
 
@@ -16,15 +17,14 @@ class Session(models.Model):
                                 ondelete='cascade', string="Course", 
                                 required=True)
     attendee_ids = fields.Many2many('res.partner', string="Attendees")
-
     taken_seats = fields.Float(string="Taken seats", compute='_taken_seats')
     active = fields.Boolean(default=True)
     end_date = fields.Date(string="End Date", store=True,
-                           compute='_get_end_date', inverse='_set_end_date')
+                            compute='_get_end_date', inverse='_set_end_date')
     hours = fields.Float(string="Duration in hours",
-                         compute='_get_hours', inverse='_set_hours')
-    attendees_count = fields.Integer(
-        string="Attendees count", compute='_get_attendees_count', store=True)
+                        compute='_get_hours', inverse='_set_hours')
+    attendees_count = fields.Integer(string="Attendees count", 
+                                    compute='_get_attendees_count', store=True)
     color = fields.Integer()
     state = fields.Selection([
         ('draft', "Draft"),
@@ -43,7 +43,7 @@ class Session(models.Model):
     @api.multi
     def action_done(self):
         self.state = 'done'
-    
+
     @api.one
     @api.depends('seats', 'attendee_ids')
     def _taken_seats(self):
@@ -53,14 +53,14 @@ class Session(models.Model):
             else:
                 r.taken_seats = 100.0 * len(r.attendee_ids) / r.seats
 
-    
     @api.onchange('seats', 'attendee_ids')
     def _verify_valid_seats(self):
         if self.seats < 0:
             return {
                 'warning': {
                     'title': _("Incorrect 'seats' value"),
-                    'message': _("The number of available seats may not be negative"),
+                    'message': _("The number of available 
+                                seats may not be negative"),
                 },
             }
         if self.seats < len(self.attendee_ids):
@@ -70,13 +70,14 @@ class Session(models.Model):
                     'message': _("Increase seats or remove excess attendees"),
                 },
             }
-    
+
     @api.one
     @api.constrains('instructor_id', 'attendee_ids')
     def _check_instructor_not_in_attendees(self):
         for r in self:
             if r.instructor_id and r.instructor_id in r.attendee_ids:
-                raise exceptions.ValidationError(_("A session's instructor can't be an attendee"))
+                raise exceptions.ValidationError(
+                            _("A session's instructor can't be an attendee"))
 
     @api.depends('start_date', 'duration')
     def _get_end_date(self):
@@ -96,12 +97,12 @@ class Session(models.Model):
             if not (r.start_date and r.end_date):
                 continue
 
-            # Compute the difference between dates, but: Friday - Monday = 4 days,
+            # Compute the difference between dates, 
+            # but: Friday - Monday = 4 days,
             # so add one day to get 5 days instead
             start_date = fields.Datetime.from_string(r.start_date)
             end_date = fields.Datetime.from_string(r.end_date)
             r.duration = (end_date - start_date).days + 1
-
 
     @api.depends('duration')
     def _get_hours(self):
@@ -116,4 +117,3 @@ class Session(models.Model):
     def _get_attendees_count(self):
         for r in self:
             r.attendees_count = len(r.attendee_ids)
-

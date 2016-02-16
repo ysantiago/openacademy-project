@@ -4,16 +4,17 @@ from psycopg2 import IntegrityError
 from openerp.tests.common import TransactionCase
 from openerp.tools import mute_logger
 
+
 class GlobalTestOpenacademyCourse(TransactionCase):
     '''
     Global test to openacademy course model
     '''
     # Method seudo-constructor of test setUp
-    def setUp(self): 
-        #Define global variables to test methods
-        super (GlobalTestOpenacademyCourse, self).setUp()
+    def setUp(self):
+        # Define global variables to test methods
+        super(GlobalTestOpenacademyCourse, self).setUp()
         self.course = self.env['openacademy.course']
-        
+
     # Method of clas taht don't is test
     def create_course(self, course_name, course_description,
                       course_responsible_id):
@@ -46,17 +47,16 @@ class GlobalTestOpenacademyCourse(TransactionCase):
     def test_20_two_courses_same_name(self):
         '''
         Test to create two courses with same name.
-        To raise constraint of unique name 
+        To raise constraint of unique name.
         '''
         new_id = self.create_course('test1', 'test_description', None)
-        print 'new_id', new_id
+
         with self.assertRaisesRegexp(
                 IntegrityError,
                 'duplicate key value violates unique'
                 ' constraint "openacademy_course_name_unique"'
-            ):
+                ):
             new_id2 = self.create_course('test1', 'test_description', None)
-            print 'new_id2', new_id2
 
     def test_15_duplicate_course(self):
         '''
@@ -64,8 +64,3 @@ class GlobalTestOpenacademyCourse(TransactionCase):
         '''
         course = self.env.ref('openacademy.course0')
         course_id = course.copy()
-        print 'course_id', course_id
-
-
-
-
